@@ -1,0 +1,30 @@
+{
+  "name": "fastly-domain",
+  "version": "0.0.1",
+  "description": "Micro Library For The Fastly Domain API",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/philippschulte/fastly-domains.git"
+  },
+  "keywords": [
+    "fastly",
+    "domains",
+    "version",
+    "services",
+    "api"
+  ],
+  "author": "Philipp Schulte <philipp.schulte@ymail.com> (http://www.philippschulte.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/philippschulte/fastly-domains/issues"
+  },
+  "homepage": "https://github.com/philippschulte/fastly-domains#readme",
+  "dependencies": {
+    "axios": "0.16.2",
+    "lodash": "4.17.4"
+  }
+}
