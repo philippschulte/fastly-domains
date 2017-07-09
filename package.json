@@ -1,10 +1,10 @@
 {
-  "name": "fastly-domain",
+  "name": "fastly-domains",
   "version": "0.0.1",
   "description": "Micro Library For The Fastly Domain API",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test"
   },
   "repository": {
     "type": "git",
@@ -13,7 +13,7 @@
   "keywords": [
     "fastly",
     "domains",
-    "version",
+    "versions",
     "services",
     "api"
   ],
@@ -26,5 +26,11 @@
   "dependencies": {
     "axios": "0.16.2",
     "lodash": "4.17.4"
+  },
+  "devDependencies": {
+    "expect": "1.20.2",
+    "express": "4.15.3",
+    "mocha": "3.4.2",
+    "supertest": "3.0.0"
   }
 }
