@@ -9,15 +9,13 @@ const services = require('../src/services');
 describe('services.js', () => {
   const app = express();
   let userServices;
-  let statusCode;
 
   before(async () => {
     userServices = await services(config.token);
-    statusCode = 200;
   });
 
   app.get('/', (req, res) => {
-    res.status(statusCode).json(userServices);
+    res.status(200).json(userServices);
   });
 
   it('should response with a status 200 for valid request', done => {
