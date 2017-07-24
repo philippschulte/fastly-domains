@@ -1,22 +1,10 @@
-const axios = require('axios');
-const services = require('./services');
-const domains = require('./domains');
+'use strict';
 
-module.exports = (token) => {
-  return new Promise((resolve, reject) => {
-    if (!token) {
-      reject('Fastly-Domain expected Fastly-Key, received undefined');
-    }
+let services = require('./services');
+let domains = require('./domains');
 
-    services(token)
-      .then(services => {
-        return domains(token, services);
-      })
-      .then(domains => {
-        resolve(domains);
-      })
-      .catch(err => {
-        reject(err.message);
-      });
-  });
+module.exports = async token => {
+  const serviceIDs = await services(token);
+  const userDomains = await domains(token, serviceIDs);
+  return userDomains;
 };
