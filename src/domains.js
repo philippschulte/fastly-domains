@@ -30,6 +30,6 @@ module.exports = async (token, serviceIDs) => {
       number_of_services: services.length
     };
   } catch (e) {
-    throw new Error(`Unable to get domains that use ${token}.`);
+    return Promise.reject(new Error(e));
   }
 };

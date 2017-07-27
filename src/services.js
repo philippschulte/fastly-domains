@@ -10,6 +10,6 @@ module.exports = async token => {
     const services = await axios.get(`${config.mainEntryPoint}/service`, { headers: { 'Fastly-Key': token } });
     return map(pick(['version', 'id']))(services.data);
   } catch (e) {
-    throw new Error(`Unable to get services that use ${token}.`);
+    return Promise.reject(new Error(e));
   }
 };
