@@ -1,54 +1,61 @@
 'use strict';
 
-const express = require('express');
+const nock = require('nock');
 const expect = require('expect');
-const request = require('supertest');
 const config = require('../src/config');
 const services = require('../src/services');
+const response = require('./response/services.response');
 
 describe('services.js', () => {
-  const app = express();
-  let userServices;
+  describe('Valid request', () => {
+    let userServices;
 
-  before(async () => {
-    userServices = await services(config.token);
+    nock(config.mainEntryPoint)
+      .get('/service')
+      .reply(200, response.body);
+
+    before(async () => {
+      userServices = await services('50a2213a73c8a8811f03f9fc6410335d');
+    });
+
+    it('should exist', () => {
+      expect(userServices).toExist();
+    });
+
+    it('should return an array', () => {
+      expect(Array.isArray(userServices)).toBe(true);
+    });
+
+    it('should return an array of objects', () => {
+      expect(userServices[0]).toBeA('object');
+    });
+
+    it('should have version and id properties', () => {
+      expect(userServices[0]).toIncludeKeys([ 'version', 'id' ]);
+    });
   });
 
-  app.get('/', (req, res) => {
-    res.status(200).json(userServices);
-  });
+  describe('Provided credentials are missing or invalid', () => {
+    let error;
 
-  it('should response with a status 200 for valid request', done => {
-    request(app)
-    .get('/')
-    .expect(200)
-    .end(done);
-  });
+    nock(config.mainEntryPoint)
+      .get('/service')
+      .reply(401, response.error[401]);
 
-  it('should return an array', done => {
-    request(app)
-    .get('/')
-    .expect(res => {
-      expect(Array.isArray(res.body)).toBe(true);
-    })
-    .end(done);
-  });
+    before(async () => {
+      try {
+        await services('invalid token');
+      } catch (e) {
+        error = e;
+      }
+    });
 
-  it('should return a list of all services', done => {
-    request(app)
-    .get('/')
-    .expect(res => {
-      expect(res.body.length).toBeGreaterThanOrEqualTo(1);
-    })
-    .end(done);
-  });
+    it('should exist', () => {
+      expect(error).toExist();
+    });
 
-  it('should include version and id properties for each service', done => {
-    request(app)
-    .get('/')
-    .expect(res => {
-      expect(res.body[0]).toIncludeKeys([ 'version', 'id' ]);
-    })
-    .end(done);
+    it('should return error message', () => {
+      expect(error.message).toBe(response.error[401].message);
+    });
   });
 });
