@@ -4,11 +4,11 @@ const expect = require('expect');
 const config = require('../src/config');
 
 describe('config.js', () => {
-  it('main entry point should exist', () => {
+  it('should exist', () => {
     expect(config.mainEntryPoint).toExist();
   });
 
-  it('main entry point should be a string', () => {
+  it('should be a string', () => {
     expect(config.mainEntryPoint).toBeA('string');
   });
 });
