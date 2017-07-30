@@ -1,61 +1,90 @@
 'use strict';
 
-const express = require('express');
+const nock = require('nock');
 const expect = require('expect');
-const request = require('supertest');
 const config = require('../src/config');
 const domains = require('../src/domains');
+const services = require('./response/services.response');
+const response = require('./response/domains.response');
 
 describe('domains.js', () => {
-  const app = express();
-  let userDomains;
+  describe('Valid request status 200', () => {
+    let userDomains;
 
-  before(async () => {
-    userDomains = await domains(config.token,[
-      { version: 3, id: '5IwGxivGVTUMZ5iF0RvaHG' },
-      { version: 2, id: '37zPl5ELMgZ2iGVv02qIac' }
-    ]);
+    nock(config.mainEntryPoint)
+      .get(`/service/${services.body[0].id}/domain`)
+      .reply(200, response.body.domains);
+
+    before(async () => {
+      userDomains = await domains('50a2213a73c8a8811f03f9fc6410335d', services.body);
+    });
+
+    it('should exist', () => {
+      expect(userDomains).toExist();
+    });
+
+    it('should return an object', () => {
+      expect(userDomains).toBeA('object');
+    });
+
+    it('should return a list of all domains', () => {
+      expect(userDomains.domains.length).toBeGreaterThanOrEqualTo(2);
+    });
+
+    it('should have domains, number_of_domains, and number_of_services properties', () => {
+      expect(userDomains).toIncludeKeys(['domains', 'number_of_domains', 'number_of_services']);
+      expect(userDomains).toEqual(response.body);
+    });
   });
 
-  app.get('/', (req, res) => {
-    res.status(200).json(userDomains);
+  describe('Invalid request status 401', () => {
+    let error;
+
+    nock(config.mainEntryPoint)
+      .get(`/service/${services.body[0].id}/domain`)
+      .reply(401);
+
+    before(async () => {
+      try {
+        await domains('invalid token', services.body);
+      } catch (e) {
+        error = response.error[401];
+      }
+    });
+
+    it('should exist', () => {
+      expect(error).toExist();
+    });
+
+    it('should return error message for status 401', () => {
+      expect(error.msg).toBe(response.error[401].msg);
+    });
   });
 
-  it('should response with a status 200 for valid request', done => {
-    request(app)
-      .get('/')
-      .expect(200)
-      .end(done);
-  });
+  describe('Invalid request status 404', () => {
+    let error;
 
-  it('should return an object', done => {
-    request(app)
-      .get('/')
-      .expect(res => {
-        expect(res.body).toBeA('object');
-      })
-      .end(done);
-  });
+    nock(config.mainEntryPoint)
+      .get('/service/60Esr3c2mP2IO4881htKVi/domain')
+      .reply(404);
 
-  it('should return a list of all domains', done => {
-    request(app)
-      .get('/')
-      .expect(res => {
-        expect(res.body.domains.length).toBeGreaterThanOrEqualTo(1);
-      })
-      .end(done);
-  });
+    before(async () => {
+      try {
+        await domains('50a2213a73c8a8811f03f9fc6410335d', [{
+          version: 3,
+          id: '60Esr3c2mP2IO4881htKVi'
+        }]);
+      } catch (e) {
+        error = response.error[404];
+      }
+    });
 
-  it('should include domains, number_of_domains and number_of_services properties', done => {
-    request(app)
-      .get('/')
-      .expect(res => {
-        expect(res.body).toIncludeKeys([
-          'domains',
-          'number_of_domains',
-          'number_of_services'
-        ]);
-      })
-      .end(done);
+    it('should exist', () => {
+      expect(error).toExist();
+    });
+
+    it('should return error message for status 404', () => {
+      expect(error.msg).toBe(response.error[404].msg);
+    });
   });
 });
