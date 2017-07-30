@@ -7,7 +7,7 @@ const services = require('../src/services');
 const response = require('./response/services.response');
 
 describe('services.js', () => {
-  describe('Valid request', () => {
+  describe('Valid request status 200', () => {
     let userServices;
 
     nock(config.mainEntryPoint)
@@ -31,22 +31,23 @@ describe('services.js', () => {
     });
 
     it('should have version and id properties', () => {
-      expect(userServices[0]).toIncludeKeys([ 'version', 'id' ]);
+      expect(userServices[0]).toIncludeKeys(['version', 'id']);
+      expect(userServices[0]).toEqual(response.body[0]);
     });
   });
 
-  describe('Provided credentials are missing or invalid', () => {
+  describe('Invalid request status 401', () => {
     let error;
 
     nock(config.mainEntryPoint)
       .get('/service')
-      .reply(401, response.error[401]);
+      .reply(401);
 
     before(async () => {
       try {
         await services('invalid token');
       } catch (e) {
-        error = e;
+        error = response.error[401];
       }
     });
 
@@ -54,8 +55,8 @@ describe('services.js', () => {
       expect(error).toExist();
     });
 
-    it('should return error message', () => {
-      expect(error.message).toBe(response.error[401].message);
+    it('should return error message for status 401', () => {
+      expect(error.msg).toBe(response.error[401].msg);
     });
   });
 });
