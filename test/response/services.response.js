@@ -3,17 +3,13 @@
 module.exports = {
   body: [
     {
-      version: 3,
-      id: '5IwGxivGVTUMZ5iF0RvaHG'
-    },
-    {
       version: 2,
-      id: '37zPl5ELMgZ2iGVv02qIac'
+      id: '20Esr3c2mP2IO4661htKVo'
     }
   ],
   error: {
     401: {
-      message: 'Error: Request failed with status code 401'
+      msg: 'Provided credentials are missing or invalid'
     }
   }
 }
