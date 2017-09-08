@@ -12,4 +12,4 @@ module.exports = {
       msg: 'Provided credentials are missing or invalid'
     }
   }
-}
+};

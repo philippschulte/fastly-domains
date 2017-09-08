@@ -12,20 +12,27 @@
   },
   "keywords": [
     "fastly",
+    "promise",
+    "promises",
     "domains",
     "versions",
     "services",
-    "api"
+    "api",
+    "cdn"
   ],
   "author": "Philipp Schulte <philipp.schulte@ymail.com> (http://www.philippschulte.com)",
   "license": "MIT",
+  "bin": {
+    "fastly-domains": "./bin/fastly-domains.js"
+  },
   "bugs": {
     "url": "https://github.com/philippschulte/fastly-domains/issues"
   },
   "homepage": "https://github.com/philippschulte/fastly-domains#readme",
   "dependencies": {
     "axios": "0.16.2",
-    "lodash": "4.17.4"
+    "lodash": "4.17.4",
+    "yargs": "8.0.2"
   },
   "devDependencies": {
     "expect": "1.20.2",
