@@ -1,28 +1,18 @@
 'use strict';
 
-module.exports = {
-  body: {
-    domains: [
-      {
-        version: 2,
-        name: 'fastly-domains.com',
-        service_id: '20Esr3c2mP2IO4661htKVo'
-      },
-      {
-        version: 2,
-        name: 'www.fastly-domains.com',
-        service_id: '20Esr3c2mP2IO4661htKVo'
-      }
-    ],
-    number_of_domains: 2,
-    number_of_services: 1
-  },
-  error: {
-    401: {
-      msg: 'Provided credentials are missing or invalid'
+module.exports.domainList = {
+  domains: [
+    {
+      version: 2,
+      name: 'fastly-domains.com',
+      service_id: '20Esr3c2mP2IO4661htKVo'
     },
-    404: {
-      msg: 'Record not found'
+    {
+      version: 2,
+      name: 'www.fastly-domains.com',
+      service_id: '20Esr3c2mP2IO4661htKVo'
     }
-  }
+  ],
+  number_of_domains: 2,
+  number_of_services: 1
 };

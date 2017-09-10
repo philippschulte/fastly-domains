@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/philippschulte/fastly-domains#readme",
   "dependencies": {
-    "axios": "0.16.2",
+    "fastly-promises": "0.4.0",
     "lodash": "4.17.4",
     "yargs": "8.0.2"
   },
