@@ -17,13 +17,9 @@ let domains = require('./domains');
  * }
  */
 module.exports = async token => {
-  try {
-    const fastlyInstance = fastly(token, null);
-    const serviceIDs = await services(fastlyInstance);
-    const userDomains = await domains(fastlyInstance, serviceIDs);
+  const fastlyInstance = fastly(token, null);
+  const fastlyServices = await services(fastlyInstance);
+  const fastlyDomains = await domains(fastlyInstance, fastlyServices);
 
-    return userDomains;
-  } catch (e) {
-    return Promise.reject(new Error(e));
-  }
+  return fastlyDomains;
 };

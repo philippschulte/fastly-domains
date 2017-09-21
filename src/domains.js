@@ -39,6 +39,6 @@ module.exports = async (instance, serviceIDs) => {
       number_of_services: services.length
     };
   } catch (e) {
-    return Promise.reject(new Error(e));
+    return Promise.reject(new Error(e.response.data.msg));
   }
 };

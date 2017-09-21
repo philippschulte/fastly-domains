@@ -20,6 +20,6 @@ module.exports = async instance => {
     
     return map(pick(['version', 'id']))(services.data);
   } catch (e) {
-    return Promise.reject(new Error(e));
+    return Promise.reject(new Error(e.response.data.msg));
   }
 };
