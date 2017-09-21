@@ -1,14 +1,14 @@
 {
   "name": "fastly-domains",
   "version": "0.0.1",
-  "description": "Micro Library For The Fastly Domain API",
+  "description": "Client to list all the domains for a particular Fastly account",
   "main": "src/index.js",
   "scripts": {
     "test": "mocha test"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/philippschulte/fastly-domains.git"
+    "url": "https://github.com/philippschulte/fastly-domains.git"
   },
   "keywords": [
     "fastly",
