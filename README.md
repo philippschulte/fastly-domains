@@ -32,6 +32,8 @@ The solution is to perform a request to [GET /service](https://docs.fastly.com/a
 
 That's exactly what the `fastly-domains` library does. Let's say you have 10 services then it needs to perform eleven requests (1 + 10) to the [Fastly API](https://docs.fastly.com/api/) in order to fetch all domains associated with an account.
 
+The library doesn't provide an option to specify a particular version of a service since it fetches the domains of all serivces. Instead it uses the active version for each request to [GET /service/service_id/version/version/domain](https://docs.fastly.com/api/config#domain_6d340186666771f022ca20f81609d03d).
+
 ## Security
 
 You'll need a [Fastly API Token](https://docs.fastly.com/api/auth#tokens) in order to use the `fastly-domains` library. Your token must have at least [global:read access](https://docs.fastly.com/api/auth#access).

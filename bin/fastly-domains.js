@@ -2,34 +2,25 @@
 
 'use strict';
 
-const yargs = require('yargs');
+const ora = require('ora');
+const chalk = require('chalk');
 const fastly = require('../src/index');
+const token = require('./fastly-token');
+const response = require('../test/response/domains.response');
 
-const argv = yargs
-  .options({
-    'token': {
-      alias: 't',
-      describe: 'Fastly API token with read access',
-      demandOption: true,
-    }
-  })
-  .check(argv => {
-    if (argv.token.length === 32) {
-      return true;
-    } else {
-      throw new Error('Your token is not a valid Fastly API token! Please try again.');
-    }
-  })
-  .help()
-  .alias('help', 'h')
-  .version()
-  .alias('version', 'v')
-  .argv;
+const spinner = ora(chalk.yellow('Fetching domains')).start();
 
-fastly(argv.token)
+fastly(token)
   .then(domains => {
-    console.log(JSON.stringify(domains, null, 2));
+    spinner.succeed(chalk.green('Fetching domains'));
+    console.log(chalk.dim(JSON.stringify(domains, null, 2)));
   })
   .catch(err => {
-    console.error(err.message);
+    spinner.fail(chalk.red('Fetching domains'));
+
+    if (err.message === response.domainList.error[401] || err.message === response.domainList.error[404]) {
+      spinner.info(chalk.blue(err.message));
+    } else {
+      spinner.info(chalk.blue('Something went wrong! Please check your internet connection and try it again.'));
+    } 
   });
