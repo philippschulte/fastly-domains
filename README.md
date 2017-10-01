@@ -17,7 +17,6 @@
 - [Security](#security)
 - [Install](#install)
 - [Usage](#usage)
-- [Options](#options)
 - [Tests](#tests)
 - [Contribute](#contribute)
 - [License](#license)
@@ -36,7 +35,7 @@ The library doesn't provide an option to specify a particular version of a servi
 
 ## Security
 
-You'll need a [Fastly API Token](https://docs.fastly.com/api/auth#tokens) in order to use the `fastly-domains` library. Your token must have at least [global:read access](https://docs.fastly.com/api/auth#access).
+You'll need a [Fastly API Token](https://docs.fastly.com/api/auth#tokens) in order to use the `fastly-domains` library. Your token must have at least [global:read access](https://docs.fastly.com/api/auth#access). The token is necessary for every single invocation and won't be saved by the library!
 
 ## Install
 
@@ -58,15 +57,18 @@ $ npm install --save fastly-domains
 
 ### Globally
 
-```bash
-$ fastly-domains --token <your_fastly_api_token>
-```
+#### fastly-domains [command] [option]
 
-Or by using the alias:
-
-```bash
-$ fastly-domains -t <your_fastly_api_token>
-```
+| Commands | Options   | Alias | Type    | Required | Description                                  |
+|----------|-----------|-------|---------|----------|----------------------------------------------|
+| read     |           |       |         |          | List all the domains in the terminal         |
+|          | --help    | -h    | boolean | false    | Show help                                    |
+|          | --version | -v    | boolean | false    | Show version number                          |
+|          | --token   | -t    | string  | true     | Fastly API token                             |
+| create   |           |       |         |          | Write all the domains to fastly-domains.json |
+|          | --help    | -h    | boolean | false    | Show help                                    |
+|          | --version | -v    | boolean | false    | Show version number                          |
+|          | --token   | -t    | string  | true     | Fastly API token                             |
 
 ### Locally
 
@@ -126,16 +128,6 @@ async function handler() {
   number_of_services: 1
 }
 ```
-
-## Options
-
-### `fastly-domains [options]`
-
-| Options   | Alias | Type   | Description         |
-|-----------|:-----:|:------:|---------------------|
-| --token   |   -t  | string | Fastly API token    |
-| --help    |   -h  |    -   | Show help           |
-| --version |   -v  |    -   | Show version number |
 
 ## Tests
 

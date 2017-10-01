@@ -3,17 +3,28 @@
 'use strict';
 
 const ora = require('ora');
+const fs = require('fs-extra');
 const chalk = require('chalk');
-const fastly = require('../src/index');
-const token = require('./fastly-token');
+const argv = require('./utils/argv');
+const fastlyDomains = require('../src/index');
 const response = require('../test/response/domains.response');
 
+const command = argv._[0];
 const spinner = ora(chalk.yellow('Fetching domains')).start();
 
-fastly(token)
-  .then(domains => {
+fastlyDomains(argv.token)
+  .then(res => {
     spinner.succeed(chalk.green('Fetching domains'));
-    console.log(chalk.dim(JSON.stringify(domains, null, 2)));
+    
+    switch (command) {
+      case 'read':
+        spinner.info(chalk.blue(`The account has ${res.number_of_services} services and ${res.number_of_domains} domains:`));
+        res.domains.forEach(domain => console.log(chalk.magentaBright(domain.name)));
+        break;
+      case 'create':
+        spinner.info(chalk.blue(`All the domains have been saved to ${process.cwd()}/fastly-domains.json`));
+        return fs.outputFile(`${process.cwd()}/fastly-domains.json`, JSON.stringify(res, null, 2));
+    }
   })
   .catch(err => {
     spinner.fail(chalk.red('Fetching domains'));
