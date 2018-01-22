@@ -52,7 +52,7 @@
     "ghooks": "2.0.0",
     "istanbul": "1.1.0-alpha.1",
     "mocha": "3.4.2",
-    "nock": "9.0.14",
+    "nock": "9.1.6",
     "rewire": "2.5.2",
     "semantic-release": "^7.0.2"
   },
