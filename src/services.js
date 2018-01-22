@@ -16,7 +16,7 @@ const pick = require('lodash/fp/pick');
  */
 module.exports = async instance => {
   try {
-    const services = await instance.serviceList();
+    const services = await instance.readServices();
     
     return map(pick(['version', 'id']))(services.data);
   } catch (e) {

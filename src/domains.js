@@ -22,7 +22,7 @@ module.exports = async (instance, serviceIDs) => {
   try {
     const servicePromises = map(service => {
       instance.service_id = service.id;
-      return instance.domainList(service.version);
+      return instance.readDomains(service.version);
     })(serviceIDs);
 
     const services = await Promise.all(servicePromises);
